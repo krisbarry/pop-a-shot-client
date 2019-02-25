@@ -1,0 +1,58 @@
+.scoreboard {
+    &.container, &.container > .flex {
+        height: 100%;
+    }
+    .v-card {
+        border-radius: 5%;
+    }
+    .teams, .controls {
+        height: 15%;
+    }
+    .scores {
+        height: 70%;
+    }
+    .team-name {
+        text-align: center;
+        &.even {
+            margin-left: 3%;
+        }
+    }
+    .score .v-card {
+        .v-card__text {
+            font-size: 30vh;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+    .clock {
+        margin: 0 -3%;
+        z-index: 1;
+        .v-card {
+            text-align: center;
+            font-weight: bold;
+        }
+        .subtitle {
+            font-size: 5vh;
+        }
+        .time {
+            margin: -3vh 0;
+        }
+        .seconds {
+            font-size: 13vh;
+            &.tenths {
+                font-size: 10vh;
+            }
+        }
+        .dot {
+            margin: 0 -2%;
+            font-size: 10vh;
+        }
+    }
+    .reset .v-btn {
+        width: 100%;
+        font-size: 3vh;
+        min-height: 50px;
+        font-weight: bold;
+        margin-left: -3%;
+    }
+}
