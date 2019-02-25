@@ -63,7 +63,7 @@ const DEFAULT_GAME_TIME = 30  // seconds
   components: {}
 })
 export default class Scoreboard extends Vue {
-  private fullSeconds: number = DEFAULT_GAME_TIME
+  private fullSeconds: number = 0
   private tenthSeconds: number = 0
   private gamePaused: boolean = false
   private gameInProgress: boolean = false

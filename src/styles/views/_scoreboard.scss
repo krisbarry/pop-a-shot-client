@@ -12,6 +12,8 @@
         height: 70%;
     }
     .team-name {
+        font-size: 5vh;
+        font-weight: bold;
         text-align: center;
         &.even {
             margin-left: 3%;
@@ -51,7 +53,7 @@
     .reset .v-btn {
         width: 100%;
         font-size: 3vh;
-        min-height: 50px;
+        // min-height: 50px;
         font-weight: bold;
         margin-left: -3%;
     }
