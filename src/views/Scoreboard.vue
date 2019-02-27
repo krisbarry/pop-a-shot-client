@@ -20,12 +20,16 @@
           </v-card-text>
         </v-card>
       </v-flex>
-      <v-flex xs2 class="clock">
+      <v-flex xs2 class="clock" :class="{'running': gameInProgress && !gamePaused}">
           <v-card>
             <v-card-text>
               <div class="subtitle">Clock</div>
               <div class="time">
-                  <span class="seconds full">{{ fullSeconds > 0 ? fullSeconds : 0 }}</span>
+                  <span class="seconds full">
+                    <span class="hide">{{ fullSeconds > 0 ? fullSeconds : 0 }}</span>
+                    <!-- span class="show">{{ fullSeconds > 0 ? fullSeconds : 0 }}</span -->
+                    <span style="visibility: hidden;">{{ fullSeconds > 0 ? fullSeconds : 0  }}</span>
+                  </span>
                   <span class="dot hidden-sm-and-down">.</span>
                   <span class="seconds tenths hidden-sm-and-down">{{ tenthSeconds }}</span>                  
               </div>
@@ -57,7 +61,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
-const DEFAULT_GAME_TIME = 30  // seconds
+const DEFAULT_GAME_TIME = 13  // seconds
 
 @Component({
   components: {}

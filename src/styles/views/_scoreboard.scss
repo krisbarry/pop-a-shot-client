@@ -33,16 +33,38 @@
             text-align: center;
             font-weight: bold;
         }
+        .v-card__text {
+            padding: 2vh 0 0;
+        }
         .subtitle {
-            font-size: 5vh;
+            font-size: 4vh;
+            line-height: 8vh;
         }
         .time {
-            margin: -3vh 0;
+            position: relative;
+            overflow-y: hidden;
+            line-height: 13vh;
         }
         .seconds {
             font-size: 13vh;
+            .hide {
+                top: -13vh;
+                position: absolute;
+            }
+            .show {
+                top: 0;
+                position: absolute;
+            }
             &.tenths {
                 font-size: 10vh;
+            }
+        }
+        &.running .time {
+            .hide {
+                animation: numberAboveToMiddle 1s infinite;                
+            }
+            .show {
+                animation: numberMiddleToBelow 1s infinite;                
             }
         }
         .dot {
@@ -53,8 +75,30 @@
     .reset .v-btn {
         width: 100%;
         font-size: 3vh;
-        // min-height: 50px;
         font-weight: bold;
         margin-left: -3%;
+    }
+
+    @keyframes numberAboveToMiddle {
+        0% {
+            top: -13vh;
+            opacity: 0;
+        }
+        25% {
+            //top: -3vh;
+            opacity: .75;
+        }
+        50% {
+            top: 0;
+            opacity: 1;
+        }
+        75% {
+            //top: 3vh;
+            opacity: .75;
+        }
+        100% {
+            top: 13vh;
+            opacity: 0;
+        }
     }
 }
