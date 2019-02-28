@@ -5,17 +5,17 @@
     .v-card {
         border-radius: 5%;
     }
-    .teams, .controls {
+    .players, .buttons {
         height: 15%;
     }
     .scores {
         height: 70%;
     }
-    .team-name {
+    .player {
         font-size: 5vh;
         font-weight: bold;
         text-align: center;
-        &.even {
+        &.away {
             margin-left: 3%;
         }
     }
@@ -47,56 +47,83 @@
         }
         .seconds {
             font-size: 13vh;
-            .hide {
+            .full {
                 top: -13vh;
                 position: absolute;
             }
-            .show {
-                top: 0;
-                position: absolute;
+            &.zero .placeholder {
+                opacity: 1;
+                transition: .33s opacity ease-in;
             }
             &.tenths {
-                font-size: 10vh;
+                font-size: 8.67vh;
             }
         }
-        &.running .time {
-            .hide {
-                animation: numberAboveToMiddle 1s infinite;                
+        &.game-over .seconds .placeholder {
+            opacity: 1;
+            transition: .5s opacity ease-in;
+        }
+        &.running .seconds:not(.zero), &.paused .seconds:not(.zero) {
+            .full {
+                animation: numberAboveToBelow 1s infinite;
             }
-            .show {
-                animation: numberMiddleToBelow 1s infinite;                
+            .placeholder {
+                opacity: 0;
             }
+        }
+        &.paused .seconds:not(.zero) .full {
+            animation-play-state: paused;
         }
         .dot {
             margin: 0 -2%;
             font-size: 10vh;
         }
     }
-    .reset .v-btn {
-        width: 100%;
-        font-size: 3vh;
-        font-weight: bold;
-        margin-left: -3%;
+    .buttons {
+        margin-left: -2%;
+        .flex:first-child {
+            margin-right: 2%;
+        }
+        .v-btn {
+            width: 100%;
+            height: 100%;
+            font-size: 3vh;
+            line-height: 7vh;
+            border-radius: 1vh;
+        }
+        .v-btn__content {
+            text-transform: capitalize;
+        }
+    
     }
 
-    @keyframes numberAboveToMiddle {
+    @keyframes zeroAboveToMiddle {
+        0% {
+            top: -13vh;
+            opacity: 0;
+        }
+        100% {
+            top: 0;
+            opacity: 1;
+        }
+    }
+
+    @keyframes numberAboveToBelow {
         0% {
             top: -13vh;
             opacity: 0;
         }
         25% {
-            //top: -3vh;
-            opacity: .75;
+            opacity: .67;
         }
         50% {
             top: 0;
             opacity: 1;
         }
         75% {
-            //top: 3vh;
-            opacity: .75;
+            opacity: .67;
         }
-        100% {
+        100%{
             top: 13vh;
             opacity: 0;
         }

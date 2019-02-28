@@ -1,31 +1,24 @@
 <template>
   <v-app id="pop-a-shot">
     <v-toolbar color="primary" dark>
-      <v-spacer></v-spacer>
-      <!-- v-toolbar-title>Application</v-toolbar-title -->
+      <v-spacer />
+      <v-toolbar-title>{{ $route.name }}</v-toolbar-title>
+      <v-spacer />
       <v-toolbar-side-icon @click.stop="sideNav = !sideNav"></v-toolbar-side-icon>
     </v-toolbar>
     <v-navigation-drawer v-model="sideNav" absolute temporary right>
       <v-list dense>
         <v-list-tile @click="sideNav = !sideNav">
           <v-list-tile-action>
-            <v-icon>close</v-icon>
+            <v-icon color="secondary">close</v-icon>
           </v-list-tile-action>
         </v-list-tile>
-        <v-list-tile @click="go('home')">
+        <v-list-tile v-for="(route, i) in $router.options.routes" :key="i" @click="go(route.name)">
           <v-list-tile-action>
-            <v-icon>home</v-icon>
+            <v-icon color="secondary" medium>{{ route.name }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Home</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile @click="go('scoreboard')">
-          <v-list-tile-action>
-            <v-icon>score</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Scoreboard</v-list-tile-title>
+            <v-list-tile-title>{{ route.name }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -45,11 +38,6 @@ import { Component, Vue } from 'vue-property-decorator'
 })
 export default class App extends Vue {
   private sideNav: boolean = false
-
-  private created() {
-    this.$vuetify.theme.primary = '#b00203'
-    this.$vuetify.theme.secondary = '#000'
-  }
 
   private go(name: string) {
     this.sideNav = false

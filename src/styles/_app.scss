@@ -1,3 +1,6 @@
 #pop-a-shot.application {
     font-family: Roboto;
+    .v-toolbar__title, .v-navigation-drawer .v-list__tile__title {
+        text-transform: capitalize;
+    }
 }
