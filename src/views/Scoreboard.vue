@@ -3,14 +3,14 @@
     <v-layout align-end row class="players">
       <v-flex xs4 offset-xs1 class="player home">
         <div class="player-wrapper">
-          Player 1
-          <!-- v-img src="" class="icon" / -->
+          {{ playerTeamName(0) }}
+          <!-- v-img src="" :class="g" / -->
         </div>
       </v-flex>
       <v-flex xs2 class="spacer clock"></v-flex>
       <v-flex xs4 class="player away">
         <div class="player-wrapper">
-          Player 2
+          {{ playerTeamName(1) }}
           <!-- v-img src="" class="icon" / -->
         </div>
       </v-flex>
@@ -19,7 +19,7 @@
       <v-flex xs4 offset-xs1 class="score home">
         <v-card dark color="secondary">
           <v-card-text>
-            0
+            {{ playerScore(0) }}
           </v-card-text>
         </v-card>
       </v-flex>
@@ -42,7 +42,7 @@
       <v-flex xs4 class="score away">
         <v-card dark color="secondary">
           <v-card-text>
-            0
+            {{ playerScore(1) }}
           </v-card-text>
         </v-card>
       </v-flex>
@@ -50,12 +50,14 @@
     </v-layout>
     <v-layout align-center justify-center row class="buttons">
       <v-flex xs4 md3 lg2>
-        <v-btn color="primary" class="first" dark @click="newGame()">
+        <v-btn color="primary" class="first" dark
+          @click="newGame()" @enter="newGame()" :disabled="!game.players">
           {{ gameButtonText }}
         </v-btn>
       </v-flex>
       <v-flex xs4 md3 lg2>
-        <v-btn color="primary" class="second" dark @click="newGame()">
+        <v-btn color="primary" class="second" dark
+          @click="newGame()" @enter="newGame()" :disabled="game.players">
           Button 2
         </v-btn>
       </v-flex>
@@ -64,6 +66,9 @@
 </template>
 
 <script lang="ts">
+import { Game } from '@/store/game/types'
+import { GAME } from '@/store/common/constants'
+import { Action, Getter } from 'vuex-class'
 import { Component, Vue } from 'vue-property-decorator'
 
 const PAUSE_GAME: string = 'Pause Game'
@@ -84,6 +89,28 @@ export default class Scoreboard extends Vue {
   private gameButtonText: string = START_NEW_GAME
   private fullSecondsIntervalId!: number
   private tenthSecondsIntervalId!: number
+
+  @Getter('game', { namespace: GAME }) private game!: Game
+
+  get playerTeamName() {
+    const vm = this;
+    return (teamIndex: number) => {
+      if (vm.game.players && vm.game.players.length > teamIndex ) {
+        return vm.game.players[teamIndex].player.teamName
+      }
+      return ''
+    }
+  }
+
+  get playerScore() {
+    const vm = this;
+    return (teamIndex: number) => {
+      if (vm.game.players && vm.game.players.length > teamIndex ) {
+        return vm.game.players[teamIndex].score
+      }
+      return 0
+    }
+  }
 
   private created() {
     this.fullSeconds = DEFAULT_GAME_TIME
