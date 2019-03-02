@@ -1,8 +1,9 @@
 @import "setup/variables.scss";
 @import "setup/mixins.scss";
 
-// @import "components/trip-planner-itineraries.scss";
+@import "components/player.scss";
 
+@import "views/players.scss";
 @import "views/scoreboard.scss";
 
 @import "app.scss";

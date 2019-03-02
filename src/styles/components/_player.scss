@@ -1,0 +1,54 @@
+.player {
+    padding: 15px 15px 0 15px;
+    &.new {
+        padding: 15px;
+    }
+    .icon {
+        margin: 0 auto;
+        border-radius: 50% !important;
+        &.v-icon {
+            color: $pop-a-shot-black;
+            min-width: 100%;
+            font-size: 150px;
+        }
+    }
+    img.icon {
+        width: 150px;
+        height: 150px;
+    }
+    .v-card__title {
+        padding: 5px 10px;
+        .player-details {
+            width: 100%;
+            .team-name {
+                font-size: 20px;
+                text-align: center;
+            }
+        }
+    }
+    &.dialog {
+        .container {
+            padding: 0 15px;
+        }
+        .v-card__text, .v-card__actions {
+            padding-top: 0;
+        }
+        .icon-wrapper {
+            text-align: center;
+            .v-icon.icon {
+                opacity: .5;
+                min-width: inherit;
+                &:hover {
+                    opacity: 1;
+                    // box-shadow: 2px 2px 2px $pop-a-shot-black;
+                }
+            }
+        }
+        .icon-file {
+            display: none;
+        }
+        .v-card__actions small {
+            margin-left: 25px;
+        }
+    }
+}

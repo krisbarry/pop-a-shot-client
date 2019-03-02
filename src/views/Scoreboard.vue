@@ -93,7 +93,7 @@ export default class Scoreboard extends Vue {
   @Getter('game', { namespace: GAME }) private game!: Game
 
   get playerTeamName() {
-    const vm = this;
+    const vm = this
     return (teamIndex: number) => {
       if (vm.game.players && vm.game.players.length > teamIndex ) {
         return vm.game.players[teamIndex].player.teamName
@@ -103,7 +103,7 @@ export default class Scoreboard extends Vue {
   }
 
   get playerScore() {
-    const vm = this;
+    const vm = this
     return (teamIndex: number) => {
       if (vm.game.players && vm.game.players.length > teamIndex ) {
         return vm.game.players[teamIndex].score

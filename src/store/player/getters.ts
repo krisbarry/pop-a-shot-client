@@ -7,6 +7,10 @@ export const getters: GetterTree<PlayerState, any> = {
         return state.error
     },
 
+    player(state): Player {
+        return state.player
+    },
+
     players(state): Player[] {
         return state.players
     }

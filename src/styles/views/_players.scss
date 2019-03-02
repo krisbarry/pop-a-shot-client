@@ -1,0 +1,8 @@
+.view.players {
+    .container {
+        max-width: 1080px;
+        &.grid-list-xs .layout .flex {
+            padding: 10px;
+        }
+    }
+}
