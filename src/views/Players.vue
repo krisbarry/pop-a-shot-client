@@ -17,7 +17,7 @@
           <span class="headline" v-else>Add New Player</span>
         </v-card-title>
         <v-card-text>
-          <v-container grid-list-md>
+          <v-container grid-list-xs>
             <v-layout wrap>
               <v-flex class="icon-wrapper" xs12>
                 <input type="file" ref="teamIcon" class="icon-file" accept="image/*" @change="onIconSelection">
@@ -38,9 +38,9 @@
               </v-flex>
               <v-flex xs12>
                 <v-text-field :append-icon="showPassword ? 'visibility_off' : 'visibility'" hint="At least 8 characters"
-                    :rules="[() => player.password.length >= 8 || 'Min 8 characters']" counter
+                    :rules="[() => player.password && player.password.length >= 8 || 'Min 8 characters']" counter
                         v-model="player.password" ref="password" :type="showPassword ? 'text' : 'password'" label="*Password"
-                            @click:append="showPassword = !showPassword" v-if="isNewPlayer"></v-text-field>
+                            @click:append="showPassword = !showPassword" v-if="!this.player.id"></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
@@ -70,7 +70,6 @@ import PlayerCard from '@/components/player/PlayerCard.vue'
 })
 export default class Players extends Vue {
   private icon: Icon = {} as Icon
-  private isNewPlayer: boolean = false
   private showPassword: boolean = false
   private showPlayerDialog: boolean = false
 
@@ -83,22 +82,15 @@ export default class Players extends Vue {
   @Action('savePlayer', {namespace: PLAYER}) private savePlayer: any
   @Action('resetPlayer', {namespace: PLAYER}) private resetPlayer: any
 
-  @Watch('player')
-  private playerChanged() {
-    console.log('playerChanged(), player.userName: ' + this.player.userName)
-  }
-
   private closePlayerDetails() {
-    this.resetPlayer()
-    this.resetPlayerForm()
+    this.resetPlayerForm()  // form reset must be first, prior to resetPlayer()
+    this.resetPlayer()  // ...as it makes player attributes undefined and resetPlayer() fixes
     this.showPlayerDialog = false
   }
 
-  private showPlayerDetails(isNewPlayer: boolean) {
-    console.log('isNewPlayer: ' + isNewPlayer)
-    this.isNewPlayer = isNewPlayer
+  private showPlayerDetails() {
     this.showPlayerDialog = true
-    if (!isNewPlayer) {
+    if (!this.player.id) {
       this.icon = {
         url: this.player.teamIcon.url
       }
@@ -113,7 +105,7 @@ export default class Players extends Vue {
   private onIconSelection(event: any) {
     const files = event.target.files
     if (files[0]) {
-      const fr = new FileReader ()
+      const fr = new FileReader()
       fr.readAsDataURL(files[0])
       fr.addEventListener('load', () => {
         this.icon = {
@@ -151,11 +143,12 @@ export default class Players extends Vue {
     Object.keys(this.player).forEach( (attr) => {
       const attrVal = (this.player as any)[attr]
       if (typeof attrVal === 'string' && !attrVal.length) {
-        console.log('something wrong with attr ' + attr)
         canSave = false
       }
       const element: any = this.$refs[attr]
-      try { element.validate(true) } catch (e) { /* catch exception attempting to validate the icon / file input */ }
+      if (element) {
+        try { element.validate(true) } catch (e) { /* catch exception attempting to validate the icon / file input */ }
+      }
     })
     if (canSave) {
       this.savePlayer(this.player)

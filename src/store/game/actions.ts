@@ -7,5 +7,6 @@ const gameService = new GameService()
 export const actions: ActionTree<GameState, any> = {
 
   async startGame({ commit, state }) {
+    //
   }
 }
