@@ -10,6 +10,10 @@ export const actions: ActionTree<PlayerState, any> = {
     commit('clearPlayerAttributes')
   },
 
+  async setPlayer({ commit, state }, player: Player) {
+    commit('setPlayer', player)
+  },
+
   async savePlayer({ commit, state }) {
     console.log('state.player: ' + state.player)
     commit('addPlayer')

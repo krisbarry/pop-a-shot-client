@@ -11,12 +11,13 @@ export const mutations: MutationTree<PlayerState> = {
         state.player.teamIcon = {}
         state.player.teamName = ''
         state.player.userName = ''
+        state.player.password = ''
         state.player.lastName = ''
         state.player.firstName = ''
     },
 
-    setPlayerTeamIcon(state: PlayerState, icon: Icon) {
-        state.player.teamIcon = icon
+    setPlayer(state: PlayerState, player: Player) {
+        state.player = player
     },
 
     playersFound(state: PlayerState, players: Player[]) {

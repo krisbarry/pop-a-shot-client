@@ -5,13 +5,14 @@ export interface Icon {
 }
 
 export interface Player {
+    id?: number
     lastName: string
     firstName: string
     userName: string
     password?: string
     teamName: string
     teamIcon: Icon
-    friends: Player[]
+    // friends: Player[]
 }
 
 export interface PlayerState {
