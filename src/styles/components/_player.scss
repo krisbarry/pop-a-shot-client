@@ -1,7 +1,7 @@
 .player {
-    padding: 15px 15px 0 15px;
+    padding: 5px 0 10px;
     &.new {
-        padding: 15px;
+        padding: 5px 0 41px;
     }
     .icon {
         margin: 0 auto;
@@ -20,9 +20,33 @@
         padding: 5px 10px;
         .player-details {
             width: 100%;
-            .team-name {
-                font-size: 20px;
+            .name {
+                padding: 5px 0 0;
+                font-size: 18px;
                 text-align: center;
+            }
+            .team-name {
+                font-size: 24px;
+                font-weight: 500;
+                text-align: center;
+            }
+        }
+    }
+    &:hover .v-card__actions.core {
+        display: flex;
+    }
+    .v-card__actions.core {
+        right: 0;
+        display: none;
+        position: absolute;
+        .v-btn {
+            right: 5px;
+            position: absolute;
+            &.edit {
+                top: 0;
+            }
+            &.delete {
+                top: 36px;
             }
         }
     }

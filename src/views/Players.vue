@@ -2,11 +2,11 @@
   <v-layout class="players view" justify-center>
     <v-container fluid grid-list-xs>
       <v-layout row wrap>
-        <v-flex v-for="p in players" :key="p.id" xs12 sm6 md4>
-          <PlayerCard :player="p" :on-player-edit="showPlayerDetails" />
+        <v-flex v-for="p in players" :key="p.id" xs12 sm6 md4 lg3>
+          <PlayerCard :player="p" :on-player-delete="deletePlayer" :on-player-edit="showPlayerDetails" :disabled="false" />
         </v-flex>
-        <v-flex class="add-new" xs12 sm6 md4>
-          <PlayerCard :on-player-edit="showPlayerDetails" />
+        <v-flex xs12 sm6 md4 lg3>
+          <PlayerCard :on-player-edit="showPlayerDetails" add-player-text="Add New Player" :disabled="false" />
         </v-flex>
       </v-layout>
     </v-container>
@@ -75,12 +75,19 @@ export default class Players extends Vue {
 
   private readonly rules: any = [(val: string) => !!val || 'This field is required']
 
+  @Getter('error', {namespace: PLAYER}) private error!: any
   @Getter('player', {namespace: PLAYER}) private player!: Player
   @Getter('players', {namespace: PLAYER}) private players!: Player[]
 
-  @Action('getPlayers', {namespace: PLAYER}) private getPlayers: any
+  @Action('setPlayer', {namespace: PLAYER}) private setPlayer: any
   @Action('savePlayer', {namespace: PLAYER}) private savePlayer: any
   @Action('resetPlayer', {namespace: PLAYER}) private resetPlayer: any
+  @Action('deletePlayer', {namespace: PLAYER}) private deletePlayer: any
+  @Action('getAllPlayers', {namespace: PLAYER}) private getPlayers: any
+
+  private created() {
+    this.getPlayers()
+  }
 
   private closePlayerDetails() {
     this.resetPlayerForm()  // form reset must be first, prior to resetPlayer()
@@ -88,11 +95,14 @@ export default class Players extends Vue {
     this.showPlayerDialog = false
   }
 
-  private showPlayerDetails() {
+  private showPlayerDetails(player: Player) {
     this.showPlayerDialog = true
-    if (!this.player.id) {
+    if (player) {
+      this.setPlayer(player)
+    }
+    if (player && player.teamIcon && !player.id) {
       this.icon = {
-        url: this.player.teamIcon.url
+        url: player.teamIcon.url
       }
     }
   }

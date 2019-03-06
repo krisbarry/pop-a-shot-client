@@ -11,7 +11,7 @@ export interface Player {
     userName: string
     password?: string
     teamName: string
-    teamIcon: Icon
+    teamIcon?: Icon
     // friends: Player[]
 }
 

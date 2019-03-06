@@ -1,0 +1,9 @@
+@mixin opaque-primary-bg-color($opacity) {
+    background-color: rgba(176, 2, 3, $opacity) !important;
+}
+
+@mixin slide($percentage) {
+    transform: translate3d($percentage, 0, 0);
+    -webkit-transform: translate3d($percentage, 0, 0);
+}
+  

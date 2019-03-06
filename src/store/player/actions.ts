@@ -6,17 +6,35 @@ const playerService = new PlayerService()
 
 export const actions: ActionTree<PlayerState, any> = {
 
-  async deletePlayer({ commit }, playerToDelete: Player) {
-    commit('deletePlayer', playerToDelete)
+  async deletePlayer({ commit, dispatch }, playerToDelete: Player) {
+    try {
+      await playerService.deletePlayer(playerToDelete)
+      dispatch('getAllPlayers')
+    } catch (e) {
+      commit('setError')
+    }
+  },
+
+  async getAllPlayers({ commit }) {
+    try {
+      const players = await playerService.getAllPlayers()
+      commit('setPlayers', players)
+      } catch (e) {
+      commit('setError')
+    }
   },
 
   async resetPlayer({ commit }) {
     commit('clearPlayerAttributes')
   },
 
-  async savePlayer({ commit, state }, playerToSave: Player) {
-    playerService.savePlayer(playerToSave)
-    commit('updatePlayer')
+  async savePlayer({ commit, dispatch }, playerToSave: Player) {
+    try {
+      await playerService.savePlayer(playerToSave)
+      dispatch('getAllPlayers')
+    } catch (e) {
+      commit('setError')
+    }
   },
 
   async setPlayer({ commit, state }, player: Player) {

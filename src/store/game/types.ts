@@ -7,7 +7,9 @@ export interface PlayerScore {
 
 export interface Game {
     date: Date
-    players: PlayerScore[]
+    player1: PlayerScore
+    player2: PlayerScore
+    // players: PlayerScore[]
 }
 
 export interface GameState {

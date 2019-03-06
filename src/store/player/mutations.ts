@@ -1,6 +1,6 @@
+import _ from 'lodash'
 import { MutationTree } from 'vuex'
 import { Player, PlayerState } from '@/store/player/types'
-import _ from 'lodash'
 
 export const mutations: MutationTree<PlayerState> = {
 
@@ -15,26 +15,15 @@ export const mutations: MutationTree<PlayerState> = {
         }
     },
 
-    deletePlayer(state: PlayerState, playerToDelete: Player) {
-        const playerToDeleteIndex = state.players.findIndex( (player) => player.id === playerToDelete.id)
-        state.players.splice(playerToDeleteIndex, 1)
-    },
-
-    playersFound(state: PlayerState, players: Player[]) {
-        state.players = players
+    setError(state: PlayerState, error: any) {
+        state.error = error
     },
 
     setPlayer(state: PlayerState, player: Player) {
         state.player = _.cloneDeep(player)
     },
 
-    updatePlayer(state: PlayerState) {
-        const clonedPlayer = _.cloneDeep(state.player)
-        const existingPlayerIndex = state.players.findIndex( (player) => player.id === state.player.id)
-        if (existingPlayerIndex > -1) {
-            state.players[existingPlayerIndex] = clonedPlayer
-        } else {
-            state.players.push(clonedPlayer)
-        }
+    setPlayers(state: PlayerState, players: Player[]) {
+        state.players = players
     }
 }
