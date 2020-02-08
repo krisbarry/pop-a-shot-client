@@ -11,7 +11,16 @@ export const actions: ActionTree<GameState, any> = {
     commit('setGamePlayers', gamePlayers)
   },
 
+  async saveGame({ commit, state }) {
+    try {
+      gameService.saveGame(state.game)
+      // commit('gameSaved')
+    } catch (e) {
+      commit('setError', e)
+    }
+  },
+
   async startGame({ commit, state }) {
-    //
+    commit('gameStarted')
   }
 }

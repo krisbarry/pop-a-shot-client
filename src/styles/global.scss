@@ -1,7 +1,8 @@
 @import "setup/variables.scss";
 @import "setup/mixins.scss";
 
-@import "components/player.scss";
+@import "components/player-card.scss";
+@import "components/players-dialog.scss";
 
 @import "views/players.scss";
 @import "views/scoreboard.scss";

@@ -8,10 +8,10 @@
                 <v-icon>delete</v-icon>
             </v-btn>
         </v-card-actions>
-        <v-img :src="player.teamIcon.url" class="icon" aspect-ratio="1" v-if="player && player.teamIcon && player.teamIcon.url"></v-img>
-        <v-icon class="icon" v-else-if="player && (!player.teamIcon || !player.teamIcon.url)">account_circle</v-icon>
-        <v-icon class="icon add" @click="showPlayerDetails()" @enter="showPlayerDetails()" v-else>add</v-icon>
         <v-card-title>
+            <v-img :src="player.teamIcon.url" class="icon" aspect-ratio="1" v-if="player && player.teamIcon && player.teamIcon.url"></v-img>
+            <v-icon class="icon" v-else-if="player && (!player.teamIcon || !player.teamIcon.url)">account_circle</v-icon>
+            <v-icon class="icon add" @click="showPlayerDetails()" @enter="showPlayerDetails()" v-else>add</v-icon>
           <div class="player-details">
             <div class="team-name" v-if="player">{{ player.teamName }}</div>
             <div class="team-name" @click="showPlayerDetails()" @enter="showPlayerDetails()" v-else>

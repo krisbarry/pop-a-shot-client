@@ -21,7 +21,6 @@
         <v-card dark color="secondary">
           <v-card-text>
             {{ game.player1.player ? game.player1.score : '-' }}
-            <!-- {{ playerScore(0) }} -->
           </v-card-text>
         </v-card>
       </v-flex>
@@ -53,8 +52,15 @@
     </v-layout>
     <v-layout align-center justify-center row class="buttons">
       <v-flex xs4 md3>
-        <v-btn color="primary" class="first" dark @click="newGame()" @enter="newGame()" :disabled="!game.player1.player && !game.player2.player">
-          {{ gameButtonText }}
+        <v-btn color="primary" class="first" dark @click="newGame()" @enter="newGame()"
+          :disabled="!game.player1.player && !game.player2.player" v-if="!gameInProgress">
+          Start a New Game
+        </v-btn>
+        <v-btn color="primary" class="first" dark @click="resumeGame()" @enter="resumeGame()" v-else-if="gamePaused">
+          Resume Game
+        </v-btn>
+        <v-btn color="primary" class="first" dark @click="pauseGame()" @enter="pauseGame()" v-else>
+          Pause Game
         </v-btn>
       </v-flex>
       <v-flex xs4 md3>
@@ -62,28 +68,28 @@
           End Game
         </v-btn>
         <v-btn color="primary" class="second" dark @click="showPlayersDialog = true" @enter="showPlayersDialog = true" v-else>
-          Manage Game Players
+          Manage Players
         </v-btn>
       </v-flex>
     </v-layout>
+    <GameSummary :show="isGameOver" :on-close="() => isGameOver = false" />
     <PlayersDialog :show="showPlayersDialog" :on-close="() => showPlayersDialog = false" />
   </v-container>
 </template>
 
 <script lang="ts">
 import { Game } from '@/store/game/types'
-import { Getter } from 'vuex-class'
 import { GAME, PLAYER } from '@/store/common/constants'
+import { Action, Getter } from 'vuex-class'
 import { Component, Vue } from 'vue-property-decorator'
+import GameSummary from '@/components/scoreboard/GameSummary.vue'
 import PlayersDialog from '@/components/scoreboard/PlayersDialog.vue'
 
-const PAUSE_GAME: string = 'Pause Game'
-const RESUME_GAME: string = 'Resume Game'
-const START_NEW_GAME: string = 'Start A New Game'
-const DEFAULT_GAME_TIME: number = 30  // game time in seconds
+const DEFAULT_GAME_TIME: number = 15  // game time in seconds
 
 @Component({
   components: {
+    GameSummary,
     PlayersDialog
   }
 })
@@ -92,14 +98,17 @@ export default class Scoreboard extends Vue {
   private onesSeconds: number = 0
   private fullSeconds: number = 0
   private tenthSeconds: number = 0
+  private isGameOver: boolean = false
   private gamePaused: boolean = false
   private gameInProgress: boolean = false
-  private gameButtonText: string = START_NEW_GAME
   private showPlayersDialog: boolean = false
   private fullSecondsIntervalId!: number
   private tenthSecondsIntervalId!: number
 
   @Getter('game', {namespace: GAME}) private game!: Game
+
+  @Action('saveGame', {namespace: GAME}) private saveGame: any
+  @Action('startGame', {namespace: GAME}) private startGame: any
 
   /*get playerTeamName() {
     const vm = this
@@ -109,15 +118,6 @@ export default class Scoreboard extends Vue {
       }
       return ''
     }
-  }
-  get playerScore() {
-    const vm = this
-    return (teamIndex: number) => {
-      if (vm.game.players && vm.game.players.length > teamIndex ) {
-        return vm.game.players[teamIndex].score
-      }
-      return '-'
-    }
   }*/
 
   private created() {
@@ -126,8 +126,7 @@ export default class Scoreboard extends Vue {
   }
 
   private destroyed() {
-    clearInterval(this.fullSecondsIntervalId)
-    clearInterval(this.tenthSecondsIntervalId)
+    this.clearTimers()
   }
 
   private startClock() {
@@ -136,7 +135,7 @@ export default class Scoreboard extends Vue {
       this.fullSecondsIntervalId = window.setInterval(() => {
         this.updateSecondsVars(false)
         if (this.fullSeconds < 0) {
-          clearInterval(this.fullSecondsIntervalId)
+          window.clearInterval(this.fullSecondsIntervalId)
         }
       }, 1000)
       window.clearTimeout(fullSecondsTimeoutId)
@@ -146,8 +145,8 @@ export default class Scoreboard extends Vue {
         if (this.fullSeconds >= 0) {
           this.tenthSeconds = 9
         } else {
+          window.clearInterval(this.tenthSecondsIntervalId)
           this.gameOver()
-          clearInterval(this.tenthSecondsIntervalId)
         }
       } else {
         this.tenthSeconds--
@@ -163,37 +162,42 @@ export default class Scoreboard extends Vue {
     this.onesSeconds = this.fullSeconds > 0 ? this.fullSeconds % 10 : 0
   }
 
-  private endGame() {
-    clearInterval(this.fullSecondsIntervalId)
-    clearInterval(this.tenthSecondsIntervalId)
-    this.fullSeconds = DEFAULT_GAME_TIME
-    this.tenthSeconds = 0
-    this.updateSecondsVars(true)
-    this.gameOver()
-  }
-
   private gameOver() {
+    this.isGameOver = true
     this.gameInProgress = false
-    this.gameButtonText = START_NEW_GAME
+    this.saveGame()
   }
 
   private newGame() {
-    if (this.gamePaused) {
-      this.gamePaused = false
-      this.gameButtonText = PAUSE_GAME
-      this.startClock()
-    } else if (this.gameInProgress) {
-      this.gamePaused = true
-      this.gameButtonText = RESUME_GAME
-      clearInterval(this.fullSecondsIntervalId)
-      clearInterval(this.tenthSecondsIntervalId)
-    } else {
-      this.fullSeconds = DEFAULT_GAME_TIME
-      this.tenthSeconds = 0
-      this.gameInProgress = true
-      this.gameButtonText = PAUSE_GAME
-      this.startClock()
-    }
+    this.fullSeconds = DEFAULT_GAME_TIME
+    this.tenthSeconds = 0
+    this.gameInProgress = true
+    this.startGame()
+    this.startClock()
+  }
+
+  private pauseGame() {
+    this.gamePaused = true
+    this.clearTimers()
+  }
+
+  private resumeGame() {
+    this.gamePaused = false
+    this.startClock()
+  }
+
+  private endGame() {
+    this.gamePaused = false
+    this.gameInProgress = false
+    this.fullSeconds = DEFAULT_GAME_TIME
+    this.tenthSeconds = 0
+    this.clearTimers()
+    this.updateSecondsVars(true)
+  }
+
+  private clearTimers() {
+    window.clearInterval(this.fullSecondsIntervalId)
+    window.clearInterval(this.tenthSecondsIntervalId)
   }
 }
 </script>

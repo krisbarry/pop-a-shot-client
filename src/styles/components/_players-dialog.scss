@@ -1,0 +1,79 @@
+.players.dialog {
+    .v-card__title {
+        &.back {
+            .v-btn {
+                visibility: visible;
+            }
+        }
+        .v-btn {
+            visibility: hidden;
+        }
+        .spacer {
+            margin-left: -36px;
+            flex-grow: .5 !important;
+            -webkit-box-flex: .5 !important;
+        }
+    }
+    .v-btn.theme--light:not(.v-btn--icon):not(.v-btn--flat) {
+        margin: 0;
+        padding: 0 6px;
+        min-width: inherit;            
+        box-shadow: none;
+        background-color: inherit;
+    }
+    .v-card__text {
+        padding: 0 0 5px;
+        overflow: hidden;
+    }
+    .container {
+        padding: 0;
+        position: relative;
+        &.slide {
+            .left {
+                @include slide(-100%);
+            }
+            .right {
+                @include slide(0%);
+            }
+        }
+        .layout {
+            padding: 0 35px;
+        }
+        .left {
+            @include slide(0%);
+            float: initial !important;
+            transition: transform .25s;
+            -o-transition: transform .25s;
+            -moz-transition: transform .25s;
+            -webkit-transition: transform .25s;
+        }
+        .right {
+            @include slide(100%);
+            top: 0;
+            float: initial !important;
+            width: 100%;
+            position: absolute;
+            transition: transform .25s;
+            -o-transition: transform .25s;
+            -moz-transition: transform .25s;
+            -webkit-transition: transform .25s;
+        }
+        .v-list {
+            width: 100%;
+            > div:hover {
+                border-radius: 5px;
+                background-color: rgba(0, 0, 0, .25);
+                // background-color: rgba(176, 2, 3, .25)
+            }
+            .v-icon {
+                transform: rotate(45deg);
+            }
+        }
+    }
+    .flex.xs6:not(:last-child) {
+        margin-right: 35px;
+    }
+    .player.new.disabled {
+        opacity: .25;
+    }
+}

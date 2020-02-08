@@ -1,45 +1,48 @@
 <template>
     <v-dialog v-model="show" persistent max-width="45%">
         <v-card class="players dialog" v-if="show">
-        <v-card-title :class="{'back': showAllPlayersSelection}">
-            <v-btn @click="goBack()">
-            <v-icon>chevron_left</v-icon>
-            </v-btn>
-            <v-spacer />
-            <span class="headline">Add Game Players</span>
-        </v-card-title>
-        <v-card-text>
-            <v-container :class="{'slide': showAllPlayersSelection}">
-            <v-layout class="left">
-                <v-flex xs6>
-                <PlayerCard :player="gamePlayers.length ? gamePlayers[0] : null" :on-player-delete="deleteGamePlayer"
-                    :on-player-edit="showAllPlayers" add-player-text="Add Player 1" :disabled="false" />
-                </v-flex>
-                <v-flex xs6>
-                <PlayerCard :player="gamePlayers.length > 1 ? gamePlayers[1] : null" :on-player-delete="deleteGamePlayer"
-                    :on-player-edit="showAllPlayers" add-player-text="Add Player 2" :disabled="!gamePlayers.length" />
-                </v-flex>
-            </v-layout>
-            <v-layout class="right">
-                <v-list>
-                <v-list-tile v-for="p in players" :key="p.id" @click="addGamePlayer(p)">
-                    <v-list-tile-avatar>
-                    <img :src="p.avatar" v-if="p.teamIcon && p.teamIcon.url">
-                    <v-icon v-else>account_circle</v-icon>
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                    <v-list-tile-title v-text="p.teamName"></v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
-                </v-list>
-            </v-layout>
-            </v-container>
-        </v-card-text>
-        <v-card-actions>
-            <v-spacer />
-            <v-btn @click="closePlayersDialog()" @enter="closePlayersDialog()" flat>Close</v-btn>
-            <v-btn @click="savePlayers()" @enter="savePlayers()" flat :disabled="gamePlayers.length !== 2 || gamePlayers[0].id === gamePlayers[1].id">Save Players</v-btn>
-        </v-card-actions>
+            <v-card-title :class="{'back': showAllPlayersSelection}">
+                <v-btn @click="goBack()">
+                <v-icon>chevron_left</v-icon>
+                </v-btn>
+                <v-spacer />
+                <span class="headline">Add Game Players</span>
+            </v-card-title>
+            <v-card-text>
+                <v-container :class="{'slide': showAllPlayersSelection}">
+                <v-layout class="left">
+                    <v-flex xs6>
+                    <PlayerCard :player="gamePlayers.length ? gamePlayers[0] : null" :on-player-delete="deleteGamePlayer"
+                        :on-player-edit="showAllPlayers" add-player-text="Add Player 1" :disabled="false" />
+                    </v-flex>
+                    <v-flex xs6>
+                    <PlayerCard :player="gamePlayers.length > 1 ? gamePlayers[1] : null" :on-player-delete="deleteGamePlayer"
+                        :on-player-edit="showAllPlayers" add-player-text="Add Player 2" :disabled="!gamePlayers.length" />
+                    </v-flex>
+                </v-layout>
+                <v-layout class="right">
+                    <v-list>
+                    <v-list-tile v-for="p in players" :key="p.id" @click="addGamePlayer(p)">
+                        <v-list-tile-avatar>
+                            <img :src="p.avatar" v-if="p.teamIcon && p.teamIcon.url">
+                            <v-icon v-else>account_circle</v-icon>
+                        </v-list-tile-avatar>
+                        <v-list-tile-content>
+                            <v-list-tile-title v-text="p.teamName"></v-list-tile-title>
+                        </v-list-tile-content>
+                        <v-list-tile-action>
+                            <v-icon>close</v-icon>
+                        </v-list-tile-action>
+                    </v-list-tile>
+                    </v-list>
+                </v-layout>
+                </v-container>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer />
+                <v-btn @click="closePlayersDialog()" @enter="closePlayersDialog()" flat>Close</v-btn>
+                <v-btn @click="savePlayers()" @enter="savePlayers()" flat :disabled="gamePlayers.length !== 2 || gamePlayers[0].id === gamePlayers[1].id">Save Players</v-btn>
+            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>

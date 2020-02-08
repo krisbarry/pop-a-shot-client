@@ -32,12 +32,9 @@
             }
         }
     }
-    &:hover .v-card__actions.core {
-        display: flex;
-    }
     .v-card__actions.core {
         right: 0;
-        display: none;
+        opacity: .85;
         position: absolute;
         .v-btn {
             right: 5px;
